@@ -1,0 +1,19 @@
+RedSocial.vacia 1 0.0966474
+RedSocial.agregar_usuarios_ver_ids 1 0.122177
+RedSocial.agregar_usuarios_ver_alias 1 0.101923
+RedSocial.agregar_usuarios_ver_amigos 1 0.075935
+RedSocial.eliminar_usuarios_ver_ids 1 0.0817696
+RedSocial.amigar_usuarios_ver_amigos 1 0.100319
+RedSocial.amigar_usuarios_ver_conocidos 1 0.0904221
+RedSocial.desamigar_usuarios_ver_amigos 1 0.127725
+RedSocial.desamigar_usuarios_ver_conocidos 0 0
+RedSocial.eliminar_usuarios_ver_amigos 0 0
+RedSocial.eliminar_usuarios_ver_conocidos 0 0
+RedSocial.obtener_id 1 0.126117
+RedSocial.amigar_usuarios_ver_amigos_popular 0 0
+RedSocial.desamigar_usuarios_ver_conocidos_popular_cambia 0 0
+RedSocial.desamigar_usuarios_ver_conocidos_popular_no_cambia 0 0
+RedSocial.eliminar_usuario_ver_conocidos_popular_cambia 0 0
+RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia 0 0
+---
+RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia

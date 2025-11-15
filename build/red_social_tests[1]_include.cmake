@@ -1,0 +1,5 @@
+if(EXISTS "/workspaces/TP TDIII/build/red_social_tests[1]_tests.cmake")
+  include("/workspaces/TP TDIII/build/red_social_tests[1]_tests.cmake")
+else()
+  add_test(red_social_tests_NOT_BUILT red_social_tests_NOT_BUILT)
+endif()

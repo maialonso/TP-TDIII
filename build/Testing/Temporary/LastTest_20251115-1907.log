@@ -1,0 +1,46 @@
+Start testing: Nov 15 21:41 UTC
+----------------------------------------------------------
+17/17 Testing: RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+17/17 Test: RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+Command: "/workspaces/TP TDIII/build/red_social_tests" "--gtest_filter=RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" "--gtest_also_run_disabled_tests"
+Directory: /workspaces/TP TDIII/build
+"RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" start time: Nov 15 21:41 UTC
+Output:
+----------------------------------------------------------
+Running main() from /workspaces/TP TDIII/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RedSocial
+[ RUN      ] RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+/workspaces/TP TDIII/red_social_tests.cpp:477: Failure
+Expected equality of these values:
+  u1
+    Which is: { "gerva" }
+  rs.conocidos_del_usuario_mas_popular()
+    Which is: {}
+/workspaces/TP TDIII/red_social_tests.cpp:489: Failure
+Expected equality of these values:
+  u1
+    Which is: { "gerva" }
+  rs.conocidos_del_usuario_mas_popular()
+    Which is: {}
+[  FAILED  ] RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia (1 ms)
+[----------] 1 test from RedSocial (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (1 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Failed.
+"RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" end time: Nov 15 21:41 UTC
+"RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 15 21:41 UTC
