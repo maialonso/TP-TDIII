@@ -24,8 +24,8 @@
 	ProcessorClockFrequency="2304.01"
 	>
 	<Testing>
-		<StartDateTime>Nov 15 21:41 UTC</StartDateTime>
-		<StartTestTime>1763242887</StartTestTime>
+		<StartDateTime>Nov 15 21:54 UTC</StartDateTime>
+		<StartTestTime>1763243671</StartTestTime>
 		<TestList>
 			<Test>./RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia</Test>
 		</TestList>
@@ -42,7 +42,7 @@
 					<Value>1</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="numeric/double" name="Execution Time">
-					<Value>0.176188</Value>
+					<Value>0.05845</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="numeric/double" name="Processors">
 					<Value>1</Value>
@@ -57,12 +57,12 @@
 					<Value>#CTEST_RESOURCE_GROUP_COUNT=</Value>
 				</NamedMeasurement>
 				<Measurement>
-					<Value encoding="base64" compression="gzip">eJzNkk1LAzEQhu/5FYOnFuyuBUFd8CDYloKItCseSglpdtoGs5k1H60i/nf3oyytKCh6cE4J7/DkfTMzCcYos4JcKNPpwtJSDvGW7KMrhEQXp3eQXo/H43gRlM5inmHh4hXRSqNH53vOyr1rXF+rE6+AkZTsljwmMKpbIC0VWCrt0cIlTDCbklRCR6hVroywPLggrCK+QcslmVLNyPGCiqBL1RCXIl8owWaXbc1hssvQB1/zqwy7swvKY8RmvbbmMNK0ELrR0WyUJZOjKXvR90LxoXmf2fplM5jc30Jd89/E+PSnLWbc1UBeve0iWRTJ6dlZAkOhdLDIBs8FSo8Z4FMQWvkXoCX4NTqEjdABXcIAQp9V/h7WSq5BuQRe4WiFdiOO4K1UbMltnWWoW8+5aJ12uh8Rbz+xfH7xPyzPAIZX45vB9e+mBZ0+5K77jf1oOsGTF7rLvrd9HoXtZbQ1h7v91U6DFSY6fKeMeXc1nTYxT6AZxGH4hnAMWrlqFgvUtE3+6n8YK/k7UDqYpuwdVod3vQ==</Value>
+					<Value encoding="base64" compression="gzip">eJzNkt1LIzEUxd/zVxx8asHOWBBcB3wQrFJYRNoRH0oJaea2DZtJZvPR7rL4vzsfZaii4OI+7H1KOJdfzsm9s2iMMhuUQpnBEGtnS6R76374Skjyaf6A/GY6naarqHSR8oIqn26s3WgK5MPIO3l0Tdtrc+INMJGS3dtAGe7aFuS1grXSgRyuMKNibqUSOiGtSmWE49FH4ZTlO3JcWlOrhfW8slXUtWosl6JcKcEWV30tMTtkGCO0/CbD4eyjCpSwxaivJe60XQnd6WR2yllTkql7KYxi9ab5mNn7ZQvMHu/R1vIrMd79aUcF9y2QN2/7RFZVdn5xkeFWKB0dscmvimSgAvQzCq3Cb9g1wpY8YSd0JJ8xII5Z4+9pq+QWymf4g5MNuZ04wXOtuJrbOytI955L0TsdDN8inv/G8rfL/8PyAri9nn6f3HxtWhicofTDT+xH14lgg9BD9rntCyTcqLB783q3P9ppOGESDMZH79QxH67n8y7mGbpBvA7fEU6hlW9msSJt99m/+h/Gav4BlE/mOXsBVFN3uw==</Value>
 				</Measurement>
 			</Results>
 		</Test>
-		<EndDateTime>Nov 15 21:41 UTC</EndDateTime>
-		<EndTestTime>1763242888</EndTestTime>
+		<EndDateTime>Nov 15 21:54 UTC</EndDateTime>
+		<EndTestTime>1763243671</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

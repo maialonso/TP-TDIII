@@ -25,18 +25,6 @@ class RedSocial{
     const std::set<std::string> & conocidos_del_usuario_mas_popular() const; // O(1)
 
   private:
-    
-//int _id;
-    //string _alias;
-    //set<int> _usuarios;
-    //map<int,string> _idalias;         
-    //unordered map<string,int> _aliasid; 
-    //map<int,set<string>> _amigos;
-    //map<int,set<string>> _conocidos;
-    //map<int, int> _cantamigos; 
-    //int _amistadestotales; 
-    //std::unordered_map<std::string,int>
-
     int _id;
     std::string _alias;
     std::set<int> _usuarios;
