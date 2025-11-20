@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-RedSocial::RedSocial() : _amistadestotales(0) {}
+RedSocial::RedSocial() : _amistadestotales(0), _idMasPopular(0) {}
 
 const set<int> & RedSocial::usuarios() const{
         return _usuarios;                               //O(1)
@@ -38,6 +38,30 @@ void RedSocial::registrar_usuario(string alias, int id){
 
 void RedSocial::eliminar_usuario(int id){
     string alias = obtener_alias(id);
+    // para cada uno si era el "conocido" entre el y otro, y ninguno mas, ya no son conocidos
+    for (auto it1 = _amigos[id].begin(); it1 != _amigos[id].end(); ++it1) {
+        const string& amigo1 = *it1;
+        int idAmigo1 = obtener_id(amigo1);
+        for (auto it2 = _amigos[id].begin(); it2 != _amigos[id].end(); ++it2) {
+            const string& amigo2 = *it2;
+            if (amigo1 == amigo2) continue; 
+            int idAmigo2 = obtener_id(amigo2);
+            bool otroAmigoEnComun = false;
+            const set<string>& amigosDeA1 = _amigos[idAmigo1];
+            const set<string>& amigosDeA2 = _amigos[idAmigo2];
+            for (auto itAmigoDeA1 = _amigos[idAmigo1].begin(); itAmigoDeA1 != _amigos[idAmigo1].end(); itAmigoDeA1++) {
+                const string& posible = *itAmigoDeA1;
+                if (_amigos[idAmigo2].find(posible) != _amigos[idAmigo2].end() && posible != obtener_alias(id)) {
+                    otroAmigoEnComun = true;
+                    break;
+                }
+            }
+            if (!otroAmigoEnComun) {
+            _conocidos[idAmigo1].erase(amigo2);
+            _conocidos[idAmigo2].erase(amigo1);
+            }
+        }  
+    }  
     //eliminar en las listas de conocidos y de amigos de todo el resto 
     for (auto itAmigos = _amigos[id].begin(); itAmigos != _amigos[id].end(); itAmigos++){
             const string& amigo = *itAmigos; 
@@ -56,8 +80,14 @@ void RedSocial::eliminar_usuario(int id){
     _usuarios.erase(id);                                    //O(log n)
     _idalias.erase(id);                                     //O(log n)
     _aliasid.erase(alias);                                  //O(log n)
-    _cantamigos.erase(id);                                  //O(log n)
-    // para cada uno si era el "conocido" entre el y otro, y ninguno mas, ya no son conocidos
+    _cantamigos.erase(id);                                  //O(log n)     
+    int popular = _idMasPopular;
+    for (auto itUsuario = _usuarios.begin(); itUsuario != _usuarios.end(); itUsuario++) {
+        int usuario = *itUsuario;
+        if (_amigos[usuario].size()>_amigos[popular].size()){
+             _idMasPopular = usuario; 
+            }
+        } 
 }
 
 void RedSocial::amigar_usuarios(int id_A, int id_B){          
@@ -94,12 +124,18 @@ void RedSocial::amigar_usuarios(int id_A, int id_B){
                 _conocidos[idk].insert(aliasA);
             } 
         }
+        int popular = _idMasPopular;
+        if (_idMasPopular == 0 || _amigos[id_A].size() > _amigos[popular].size()){
+            _idMasPopular = id_A;
+        }
+        if (_amigos[id_B].size() > _amigos[popular].size()){
+            _idMasPopular = id_B;
+        }
     }
     else{
         return; 
     }
 }
-
 
 void RedSocial::desamigar_usuarios(int id_A, int id_B){
     string aliasA = obtener_alias(id_A);
@@ -160,7 +196,14 @@ void RedSocial::desamigar_usuarios(int id_A, int id_B){
         _conocidos[idAmigoB].erase(aliasA);
         _conocidos[id_A].erase(amigoB);
         }
-    }    
+    }   
+    int popular = _idMasPopular;
+    for (auto itUsuario = _usuarios.begin(); itUsuario != _usuarios.end(); itUsuario++) {
+        int usuario = *itUsuario;
+        if (_amigos[usuario].size()>_amigos[popular].size()){
+            _idMasPopular = usuario;
+            }
+        }  
 }
 
 int RedSocial::obtener_id(string alias) const{                      
@@ -168,7 +211,6 @@ int RedSocial::obtener_id(string alias) const{
 }
 
 const set<string> & RedSocial::conocidos_del_usuario_mas_popular() const{
-    static const set<string> vacio;
-    return vacio;
+    int popular = _idMasPopular;                                                //O(1)
+    return _conocidos.at(popular);                                              //O(1)
 }
-

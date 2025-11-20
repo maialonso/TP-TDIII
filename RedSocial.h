@@ -29,11 +29,13 @@ class RedSocial{
     std::string _alias;
     std::set<int> _usuarios;
     std::map<int,std::string> _idalias;
-    std::unordered_map<std::string,int> _aliasid;   // <- corregido
+    std::unordered_map<std::string,int> _aliasid;   
     std::map<int,std::set<std::string>> _amigos;
-    std::map<int,std::set<std::string>> _conocidos;
+    std::unordered_map<int,std::set<std::string>> _conocidos;
+    //std::map<int,std::set<std::string>> _conocidos;
     std::map<int,int> _cantamigos;
     int _amistadestotales;
+    int _idMasPopular;
 
 };
 
