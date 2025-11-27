@@ -35,6 +35,7 @@ class RedSocial{
     std::map<int,int> _cantamigos;
     int _amistadestotales;
     int _idMasPopular;
+    std::set<std::string> _conocidos_mas_popular;
 
 };
 

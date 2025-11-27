@@ -120,7 +120,9 @@ void RedSocial::eliminar_usuario(int id){
         if (_amigos[usuario].size() > _amigos[popular].size()){                                                             // O(log n)
              _idMasPopular = usuario;                                                                                       // O(1)
         }
-    }                                                                                                                       // O(n · log n)
+    }    
+                                                                                                                            // O(n · log n)
+    _conocidos_mas_popular = _conocidos.at(_idMasPopular);                                                                  // O(1) promedio
 }
 
 
@@ -181,6 +183,7 @@ void RedSocial::amigar_usuarios(int id_A, int id_B){
         if (_amigos[id_B].size() > _amigos[popular].size()){                                // O(log n) + O(1)
             _idMasPopular = id_B;                                                           // O(1)
         }
+        _conocidos_mas_popular = _conocidos.at(_idMasPopular);                              // O(1) promedio
     }
     else{
         return;                                                                             // O(1)
@@ -285,6 +288,7 @@ void RedSocial::desamigar_usuarios(int id_A, int id_B){
             _idMasPopular = usuario;                                                        // O(1)
         }
     }
+    _conocidos_mas_popular = _conocidos.at(_idMasPopular);                                 // O(1) promedio
 }
 
 
@@ -294,8 +298,7 @@ int RedSocial::obtener_id(string alias) const{
 }
 
 
-// Complejidad: O(1) promedio.
+// Complejidad: O(1).
 const set<string> & RedSocial::conocidos_del_usuario_mas_popular() const{
-    int popular = _idMasPopular;                                    // O(1)
-    return _conocidos.at(popular);                                  // O(1) promedio
+    return _conocidos_mas_popular;                                 // O(1)
 }
