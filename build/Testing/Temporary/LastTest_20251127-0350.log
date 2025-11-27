@@ -1,0 +1,30 @@
+Start testing: Nov 27 14:31 UTC
+----------------------------------------------------------
+17/17 Testing: RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+17/17 Test: RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+Command: "/workspaces/TP TDIII/build/red_social_tests" "--gtest_filter=RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" "--gtest_also_run_disabled_tests"
+Directory: /workspaces/TP TDIII/build
+"RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" start time: Nov 27 14:31 UTC
+Output:
+----------------------------------------------------------
+Running main() from /workspaces/TP TDIII/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RedSocial
+[ RUN      ] RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia
+[       OK ] RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia (0 ms)
+[----------] 1 test from RedSocial (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.11 sec
+----------------------------------------------------------
+Test Passed.
+"RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" end time: Nov 27 14:31 UTC
+"RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 27 14:31 UTC

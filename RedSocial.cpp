@@ -2,215 +2,300 @@
 #include <iostream>
 using namespace std;
 
-RedSocial::RedSocial() : _amistadestotales(0), _idMasPopular(0) {}
+RedSocial::RedSocial() : _amistadestotales(0), _idMasPopular(0) {}      // O(1)
 
+
+// Complejidad: O(1).
 const set<int> & RedSocial::usuarios() const{
-        return _usuarios;                               //O(1)
+    return _usuarios;                               // O(1)
 }
 
+
+// Complejidad: O(log n), donde n es la cantidad total de usuarios.
 string RedSocial::obtener_alias(int id) const{
-    auto it = _idalias.find(id);                       //O(log n)
-    return it-> second;                                //O(1)
+    auto it = _idalias.find(id);                    // O(log n)
+    return it->second;                              // O(1)
 }                          
 
+
+// Complejidad: O(log n), donde n es la cantidad total de usuarios.
 const set<string> & RedSocial::obtener_amigos(int id) const{
-    auto it = _amigos.find(id);                                 //O(log n)                   
-    return it->second;                                          //O(1)                     
+    auto it = _amigos.find(id);                     // O(log n)                   
+    return it->second;                              // O(1)                     
 }
 
+
+// Complejidad: O(1) promedio, donde n es la cantidad total de usuarios.
 const set<string> & RedSocial::obtener_conocidos(int id) const{
-    auto it = _conocidos.find(id);                                     //O(log n)                
-    return it->second;                                                 //O(1)  
+    auto it = _conocidos.find(id);                  // O(1) promedio (unordered_map::find)                
+    return it->second;                              // O(1)  
 }
 
+
+// Complejidad: O(1).
 int RedSocial::cantidad_amistades() const{
-    return _amistadestotales;                 //O(1)
+    return _amistadestotales;                       // O(1)
 }
 
+
+// Complejidad: O(log n), donde n es la cantidad total de usuarios.
 void RedSocial::registrar_usuario(string alias, int id){
-    _usuarios.insert(id);                                   //O(log n)
-    _idalias[id] = alias;                                   //O(log n)
-    _aliasid[alias] = id;                                   //O(log n)
-    _amigos [id] = {};                                      //O(log n) 
-    _cantamigos [id] = 0;                                   //O(log n)    
-    _conocidos [id] = {};                                   //O(log n)
+    _usuarios.insert(id);                           // O(log n)
+    _idalias[id] = alias;                           // O(log n)
+    _aliasid[alias] = id;                           // O(1) promedio
+    _amigos[id] = {};                               // O(log n)
+    _cantamigos[id] = 0;                            // O(log n)    
+    _conocidos[id] = {};                            // O(1) promedio
 }
 
-void RedSocial::eliminar_usuario(int id){
-    string alias = obtener_alias(id);
-    // para cada uno si era el "conocido" entre el y otro, y ninguno mas, ya no son conocidos
-    for (auto it1 = _amigos[id].begin(); it1 != _amigos[id].end(); ++it1) {
-        const string& amigo1 = *it1;
-        int idAmigo1 = obtener_id(amigo1);
-        for (auto it2 = _amigos[id].begin(); it2 != _amigos[id].end(); ++it2) {
-            const string& amigo2 = *it2;
-            if (amigo1 == amigo2) continue; 
-            int idAmigo2 = obtener_id(amigo2);
-            bool otroAmigoEnComun = false;
-            const set<string>& amigosDeA1 = _amigos[idAmigo1];
-            const set<string>& amigosDeA2 = _amigos[idAmigo2];
-            for (auto itAmigoDeA1 = _amigos[idAmigo1].begin(); itAmigoDeA1 != _amigos[idAmigo1].end(); itAmigoDeA1++) {
-                const string& posible = *itAmigoDeA1;
-                if (_amigos[idAmigo2].find(posible) != _amigos[idAmigo2].end() && posible != obtener_alias(id)) {
-                    otroAmigoEnComun = true;
-                    break;
+
+// Complejidad: O(d^2 · c · log n + (d + f + n) · log n), donde:
+// n = cantidad total de usuarios,
+// d = cantidad de amigos del usuario id (|_amigos[id]|),
+// c = máxima cantidad de amigos de un amigo de id,
+// f = cantidad de conocidos del usuario id (|_conocidos[id]|).
+void RedSocial::eliminar_usuario(int id){       
+
+    string alias = obtener_alias(id);                                                                                        // O(log n)
+    
+    // para cada uno, si era el "conocido" entre él y otro, y ninguno más, ya no son conocidos
+    for (auto it1 = _amigos[id].begin(); it1 != _amigos[id].end(); ++it1) {                                                 // O(d)
+        const string& amigo1 = *it1;                                                                                        // O(1)
+        int idAmigo1 = obtener_id(amigo1);                                                                                  // O(1) promedio            
+        
+        for (auto it2 = _amigos[id].begin(); it2 != _amigos[id].end(); ++it2) {                                             // O(d)
+            const string& amigo2 = *it2;                                                                                    // O(1)
+            
+            if (amigo1 == amigo2) continue;                                                                                 // O(1)
+            int idAmigo2 = obtener_id(amigo2);                                                                              // O(1) promedio
+            bool otroAmigoEnComun = false;                                                                                  // O(1)
+            const set<string>& amigosDeA1 = _amigos[idAmigo1];                                                              // O(log n)
+            const set<string>& amigosDeA2 = _amigos[idAmigo2];                                                              // O(log n)
+            
+            for (auto itAmigoDeA1 = _amigos[idAmigo1].begin();
+                 itAmigoDeA1 != _amigos[idAmigo1].end(); itAmigoDeA1++) {                                                   // O(c)
+                const string& posible = *itAmigoDeA1;                                                                       // O(1)
+                if (_amigos[idAmigo2].find(posible) != _amigos[idAmigo2].end() &&                                           // O(log n)
+                    posible != obtener_alias(id)) {                                                                         // O(log n)
+                    otroAmigoEnComun = true;                                                                                // O(1)        
+                    break;                                                                                                  // O(1)
                 }
             }
-            if (!otroAmigoEnComun) {
-            _conocidos[idAmigo1].erase(amigo2);
-            _conocidos[idAmigo2].erase(amigo1);
+            
+            if (!otroAmigoEnComun) {                                                                                        // O(1)
+                _conocidos[idAmigo1].erase(amigo2);                                                                         // O(1) promedio + O(log n)
+                _conocidos[idAmigo2].erase(amigo1);                                                                         // O(1) promedio + O(log n)
             }
-        }  
+        }                                                                                                                   // doble for: O(d^2 · (c · log n))
     }  
-    //eliminar en las listas de conocidos y de amigos de todo el resto 
-    for (auto itAmigos = _amigos[id].begin(); itAmigos != _amigos[id].end(); itAmigos++){
-            const string& amigo = *itAmigos; 
-            int idAmigo = obtener_id(amigo);
-            _amigos[idAmigo].erase(alias);
-            _cantamigos[idAmigo]--;
-            _amistadestotales--;
+    
+    // eliminar en las listas de amigos y contadores de todo el resto 
+    for (auto itAmigos = _amigos[id].begin(); itAmigos != _amigos[id].end(); itAmigos++){                                   // O(d)
+        const string& amigo = *itAmigos;                                                                                    // O(1)
+        int idAmigo = obtener_id(amigo);                                                                                    // O(1) promedio
+        _amigos[idAmigo].erase(alias);                                                                                      // O(log n)
+        _cantamigos[idAmigo]--;                                                                                             // O(log n)
+        _amistadestotales--;                                                                                                // O(1)
+    }
+    _amigos.erase(id);                                                                                                      // O(log n)
+    
+    // eliminar en las listas de conocidos de todo el resto
+    for (auto itConocidos = _conocidos[id].begin();
+         itConocidos != _conocidos[id].end(); itConocidos++){                                                               // O(f)
+        const string& conocido = *itConocidos;                                                                              // O(1)
+        int idConocido = obtener_id(conocido);                                                                              // O(1) promedio        
+        _conocidos[idConocido].erase(alias);                                                                                // O(1) promedio + O(log n)
+    }
+    
+    _conocidos.erase(id);                                                                                                   // O(1) promedio
+    _usuarios.erase(id);                                                                                                    // O(log n)
+    _idalias.erase(id);                                                                                                     // O(log n)
+    _aliasid.erase(alias);                                                                                                  // O(1) promedio
+    _cantamigos.erase(id);                                                                                                  // O(log n)     
+    
+    int popular = _idMasPopular;                                                                                            // O(1)
+    
+    for (auto itUsuario = _usuarios.begin(); itUsuario != _usuarios.end(); itUsuario++) {                                   // O(n)
+        int usuario = *itUsuario;                                                                                           // O(1)
+        if (_amigos[usuario].size() > _amigos[popular].size()){                                                             // O(log n)
+             _idMasPopular = usuario;                                                                                       // O(1)
         }
-    _amigos.erase(id);                                      //O(log n)
-    for (auto itConocidos = _conocidos[id].begin(); itConocidos != _conocidos[id].end(); itConocidos++){
-            const string& conocido = *itConocidos;
-            int idConocido = obtener_id(conocido);
-            _conocidos[idConocido].erase(alias);
-        }
-    _conocidos.erase(id);                                   //O(log n)
-    _usuarios.erase(id);                                    //O(log n)
-    _idalias.erase(id);                                     //O(log n)
-    _aliasid.erase(alias);                                  //O(log n)
-    _cantamigos.erase(id);                                  //O(log n)     
-    int popular = _idMasPopular;
-    for (auto itUsuario = _usuarios.begin(); itUsuario != _usuarios.end(); itUsuario++) {
-        int usuario = *itUsuario;
-        if (_amigos[usuario].size()>_amigos[popular].size()){
-             _idMasPopular = usuario; 
-            }
-        } 
+    }                                                                                                                       // O(n · log n)
 }
 
-void RedSocial::amigar_usuarios(int id_A, int id_B){          
-    string aliasA = obtener_alias(id_A);
-    string aliasB = obtener_alias(id_B);
-    auto it1 = _amigos.find(id_A); 
-    // si no son amigos, se amigan
-    if (it1 -> second.find (aliasB) == it1 -> second.end()){ 
-        _amigos[id_A].insert(aliasB);
-        _cantamigos[id_A]++;
-        _amigos[id_B].insert(aliasA);
-        _cantamigos[id_B]++;
+
+void RedSocial::amigar_usuarios(int id_A, int id_B){   
+    
+    // Complejidad: O((a + b) · log n), donde:
+    // n = cantidad total de usuarios,
+    // a = cantidad de amigos de id_A,
+    // b = cantidad de amigos de id_B.
+
+    string aliasA = obtener_alias(id_A);                                                    // O(log n)
+    string aliasB = obtener_alias(id_B);                                                    // O(log n)
+
+    auto it1 = _amigos.find(id_A);                                                          // O(log n)    
+    
+    // si no son amigos, se amigan                                  
+    if (it1->second.find(aliasB) == it1->second.end()){                                     // O(log a)
+
+        _amigos[id_A].insert(aliasB);                                                       // O(log n) + O(log a)
+        _cantamigos[id_A]++;                                                                // O(log n)
+
+        _amigos[id_B].insert(aliasA);                                                       // O(log n) + O(log b)
+        _cantamigos[id_B]++;                                                                // O(log n)    
+
         // si eran conocidos dejan de serlo
-        _conocidos[id_A].erase(aliasB);
-        _conocidos[id_B].erase(aliasA);
+        _conocidos[id_A].erase(aliasB);                                                     // O(1) promedio + O(log n) 
+        _conocidos[id_B].erase(aliasA);                                                     // O(1) promedio + O(log n)        
+
         // hay una nueva amistad
-        _amistadestotales ++;
+        _amistadestotales++;                                                                // O(1)
+
         // cada uno de sus amigos, si no es ya amigo del otro pasa a ser conocido del otro (y la recíproca)
-        for (auto it2 = _amigos[id_A].begin(); it2 != _amigos[id_A].end(); it2++){
-            const string& amigoA = *it2;
-            if (amigoA == aliasB) continue;
-            if (_amigos[id_B].find(amigoA) == _amigos[id_B].end()) {
-                _conocidos[id_B].insert(amigoA);
-                int idc = obtener_id(amigoA);
-                _conocidos[idc].insert(aliasB);
+        for (auto it2 = _amigos[id_A].begin(); it2 != _amigos[id_A].end(); it2++){          // O(a)
+            const string& amigoA = *it2;                                                    // O(1)
+            if (amigoA == aliasB) continue;                                                 // O(1)
+            if (_amigos[id_B].find(amigoA) == _amigos[id_B].end()) {                        // O(log n) + O(log b)
+                _conocidos[id_B].insert(amigoA);                                            // O(1) promedio + O(log n)
+                int idc = obtener_id(amigoA);                                               // O(1) promedio
+                _conocidos[idc].insert(aliasB);                                             // O(1) promedio + O(log n)
             }
         }
-        for (auto it3 = _amigos[id_B].begin(); it3 != _amigos[id_B].end(); it3++){
-            const string& amigoB = *it3;
-            if (amigoB == aliasA) continue;
-            if (_amigos[id_A].find(amigoB) == _amigos[id_A].end()) {
-                _conocidos[id_A].insert(amigoB);
-                int idk = obtener_id(amigoB);
-                _conocidos[idk].insert(aliasA);
+
+        for (auto it3 = _amigos[id_B].begin(); it3 != _amigos[id_B].end(); it3++){          // O(b)
+            const string& amigoB = *it3;                                                    // O(1)
+            if (amigoB == aliasA) continue;                                                 // O(1)    
+            if (_amigos[id_A].find(amigoB) == _amigos[id_A].end()) {                        // O(log n) + O(log a)
+                _conocidos[id_A].insert(amigoB);                                            // O(1) promedio + O(log n)
+                int idk = obtener_id(amigoB);                                               // O(1) promedio
+                _conocidos[idk].insert(aliasA);                                             // O(1) promedio + O(log n)
             } 
         }
-        int popular = _idMasPopular;
-        if (_idMasPopular == 0 || _amigos[id_A].size() > _amigos[popular].size()){
-            _idMasPopular = id_A;
-        }
-        if (_amigos[id_B].size() > _amigos[popular].size()){
-            _idMasPopular = id_B;
+
+        int popular = _idMasPopular;                                                        // O(1)
+
+        if (_idMasPopular == 0 || _amigos[id_A].size() > _amigos[popular].size()){          // O(log n) + O(1)
+            _idMasPopular = id_A;                                                           // O(1)
+        }   
+        if (_amigos[id_B].size() > _amigos[popular].size()){                                // O(log n) + O(1)
+            _idMasPopular = id_B;                                                           // O(1)
         }
     }
     else{
-        return; 
+        return;                                                                             // O(1)
     }
 }
+
 
 void RedSocial::desamigar_usuarios(int id_A, int id_B){
-    string aliasA = obtener_alias(id_A);
-    string aliasB = obtener_alias(id_B);
+
+    // Complejidad: O(a·b + a·c·log b + b·d·log a + n·log n), donde:
+    // a = cantidad de amigos de id_A,
+    // b = cantidad de amigos de id_B,
+    // c = máximo número de amigos de un amigo de A,
+    // d = máximo número de amigos de un amigo de B,
+    // n = cantidad total de usuarios.
+
+    string aliasA = obtener_alias(id_A);                                                    // O(log n)
+    string aliasB = obtener_alias(id_B);                                                    // O(log n)
+
     // dejan de ser amigos
-    auto it1 = _amigos.find(id_A); 
-    it1 -> second.erase(aliasB);
-    auto it2 = _cantamigos.find(id_A); 
-    it2 -> second --;
-    auto it3 = _amigos.find(id_B); 
-    it3 -> second.erase(aliasA);
-    auto it4 = _cantamigos.find(id_B); 
-    it4 -> second --;   
-    // hay una amistad menos
-    _amistadestotales --;
-    // si tienen un amigo en comun no son mas amigos pero son conocidos 
-    bool amigoComun = false;
-    for (auto it1 = _amigos[id_A].begin(); it1 != _amigos[id_A].end(); it1++){
-        const string& amigoA = *it1;
-        for (auto it2 = _amigos[id_B].begin(); it2 != _amigos[id_B].end(); it2++){
-        const string& amigoB = *it2;
-        if (amigoA == amigoB) amigoComun = true;
+    auto it1 = _amigos.find(id_A);                                                          // O(log n)
+    it1->second.erase(aliasB);                                                              // O(log a)
+    auto it2 = _cantamigos.find(id_A);                                                      // O(log n)
+    it2->second--;                                                                          // O(1)
+    auto it3 = _amigos.find(id_B);                                                          // O(log n)
+    it3->second.erase(aliasA);                                                              // O(log b)
+    auto it4 = _cantamigos.find(id_B);                                                      // O(log n)
+    it4->second--;                                                                          // O(1)
+
+    _amistadestotales--;                                                                    // O(1)
+
+    bool amigoComun = false;                                                                // O(1)
+
+    // chequeo si tienen un amigo en común
+    for (auto it1 = _amigos[id_A].begin(); it1 != _amigos[id_A].end(); it1++){              // O(a)
+        const string& amigoA = *it1;                                                        // O(1)
+        for (auto it2 = _amigos[id_B].begin(); it2 != _amigos[id_B].end(); it2++){          // O(b)
+            const string& amigoB = *it2;                                                    // O(1)
+            if (amigoA == amigoB) amigoComun = true;                                        // O(1)
         }
     }
-    if(amigoComun){
-        _conocidos[id_A].insert(aliasB);
-        _conocidos[id_B].insert(aliasA);
+
+    if(amigoComun){                                                                         // O(1)
+        _conocidos[id_A].insert(aliasB);                                                    // O(log n)
+        _conocidos[id_B].insert(aliasA);                                                    // O(log n)
     }
-    // para cada uno de sus amigos si la unica persona que tenian en comun dejan de ser conocidos, si tienen otra persona en comun siguen siendo conocidos FALTAAAAAAAAAAAAAAAAAAAAA
-    for (auto itAmigosA = _amigos[id_A].begin(); itAmigosA != _amigos[id_A].end(); itAmigosA++) {
-    const string& amigoA = *itAmigosA;
-    int idAmigoA = obtener_id(amigoA);
-    bool sigueConocido = false;
-    // busco si ese amigo de A comparte algún amigo con B
-    for (auto itAmigosDeAmigo1 = _amigos[idAmigoA].begin(); itAmigosDeAmigo1 != _amigos[idAmigoA].end(); itAmigosDeAmigo1++) {
-        const string& posible = *itAmigosDeAmigo1;
-        if (_amigos[id_B].find(posible) != _amigos[id_B].end()) {
-            sigueConocido = true;
+
+    // actualizar conocidos de amigos de A
+    for (auto itAmigosA = _amigos[id_A].begin();  itAmigosA != _amigos[id_A].end(); itAmigosA++) {   // O(a)
+        
+        const string& amigoA = *itAmigosA;                                                  // O(1)
+        int idAmigoA = obtener_id(amigoA);                                                  // O(1) promedio
+        bool sigueConocido = false;                                                         // O(1)
+
+        // amigos del amigo de A (máximo c)
+        for (auto itAmigosDeAmigo1 = _amigos[idAmigoA].begin();
+             itAmigosDeAmigo1 != _amigos[idAmigoA].end(); itAmigosDeAmigo1++) {             // O(c)
+
+            const string& posible = *itAmigosDeAmigo1;                                      // O(1)
+
+            if (_amigos[id_B].find(posible) != _amigos[id_B].end()) {                       // O(log b)
+                sigueConocido = true;                                                       // O(1)
             }
         }
-    if (!sigueConocido){
-        _conocidos[idAmigoA].erase(aliasB);
-        _conocidos[id_B].erase(amigoA);
+
+        if (!sigueConocido){                                                                // O(1)
+            _conocidos[idAmigoA].erase(aliasB);                                             // O(log a)
+            _conocidos[id_B].erase(amigoA);                                                 // O(log b)
         }
     }
-    for (auto itAmigosB = _amigos[id_B].begin(); itAmigosB != _amigos[id_B].end(); itAmigosB++) {
-    const string& amigoB = *itAmigosB;
-    int idAmigoB = obtener_id(amigoB);
-    bool sigueConocido = false;
-    // busco si ese amigo de B comparte algún amigo con A
-    for (auto itAmigosDeAmigo2 = _amigos[idAmigoB].begin(); itAmigosDeAmigo2 != _amigos[idAmigoB].end(); itAmigosDeAmigo2++) {
-        const string& posible = *itAmigosDeAmigo2;
-        if (_amigos[id_A].find(posible) != _amigos[id_A].end()) {
-            sigueConocido = true;
+
+    // actualizar conocidos de amigos de B
+    for (auto itAmigosB = _amigos[id_B].begin(); itAmigosB != _amigos[id_B].end(); itAmigosB++) {   // O(b)
+        
+        const string& amigoB = *itAmigosB;                                                  // O(1)
+        int idAmigoB = obtener_id(amigoB);                                                  // O(1) promedio
+        bool sigueConocido = false;                                                         // O(1)
+
+        // amigos del amigo de B (máximo d)
+        for (auto itAmigosDeAmigo2 = _amigos[idAmigoB].begin();
+             itAmigosDeAmigo2 != _amigos[idAmigoB].end(); itAmigosDeAmigo2++) {             // O(d)
+
+            const string& posible = *itAmigosDeAmigo2;                                      // O(1)
+
+            if (_amigos[id_A].find(posible) != _amigos[id_A].end()) {                       // O(log a)
+                sigueConocido = true;                                                       // O(1)
             }
         }
-    if (!sigueConocido){
-        _conocidos[idAmigoB].erase(aliasA);
-        _conocidos[id_A].erase(amigoB);
+
+        if (!sigueConocido){                                                                // O(1)
+            _conocidos[idAmigoB].erase(aliasA);                                             // O(log b)
+            _conocidos[id_A].erase(amigoB);                                                 // O(log a)
         }
     }   
-    int popular = _idMasPopular;
-    for (auto itUsuario = _usuarios.begin(); itUsuario != _usuarios.end(); itUsuario++) {
-        int usuario = *itUsuario;
-        if (_amigos[usuario].size()>_amigos[popular].size()){
-            _idMasPopular = usuario;
-            }
-        }  
+
+    int popular = _idMasPopular;                                                            // O(1)
+
+    // recalculo usuario más popular
+    for (auto itUsuario = _usuarios.begin(); itUsuario != _usuarios.end(); itUsuario++) {   // O(n)
+        int usuario = *itUsuario;                                                           // O(1)
+        if (_amigos[usuario].size() > _amigos[popular].size()){                             // O(log n)
+            _idMasPopular = usuario;                                                        // O(1)
+        }
+    }
 }
 
+
+// Complejidad: O(1) promedio.
 int RedSocial::obtener_id(string alias) const{                      
-    return _aliasid.at(alias);
+    return _aliasid.at(alias);                                      // O(1) promedio
 }
 
+
+// Complejidad: O(1) promedio.
 const set<string> & RedSocial::conocidos_del_usuario_mas_popular() const{
-    int popular = _idMasPopular;                                                //O(1)
-    return _conocidos.at(popular);                                              //O(1)
+    int popular = _idMasPopular;                                    // O(1)
+    return _conocidos.at(popular);                                  // O(1) promedio
 }

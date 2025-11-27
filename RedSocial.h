@@ -32,7 +32,6 @@ class RedSocial{
     std::unordered_map<std::string,int> _aliasid;   
     std::map<int,std::set<std::string>> _amigos;
     std::unordered_map<int,std::set<std::string>> _conocidos;
-    //std::map<int,std::set<std::string>> _conocidos;
     std::map<int,int> _cantamigos;
     int _amistadestotales;
     int _idMasPopular;

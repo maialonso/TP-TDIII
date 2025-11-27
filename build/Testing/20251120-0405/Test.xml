@@ -24,8 +24,8 @@
 	ProcessorClockFrequency="2304.01"
 	>
 	<Testing>
-		<StartDateTime>Nov 20 21:06 UTC</StartDateTime>
-		<StartTestTime>1763672802</StartTestTime>
+		<StartDateTime>Nov 20 21:11 UTC</StartDateTime>
+		<StartTestTime>1763673106</StartTestTime>
 		<TestList>
 			<Test>./RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia</Test>
 		</TestList>
@@ -36,7 +36,7 @@
 			<FullCommandLine>/workspaces/TP\ TDIII/build/red_social_tests "--gtest_filter=RedSocial.eliminar_usuario_ver_conocidos_popular_no_cambia" "--gtest_also_run_disabled_tests"</FullCommandLine>
 			<Results>
 				<NamedMeasurement type="numeric/double" name="Execution Time">
-					<Value>0.0516049</Value>
+					<Value>0.059729</Value>
 				</NamedMeasurement>
 				<NamedMeasurement type="numeric/double" name="Processors">
 					<Value>1</Value>
@@ -55,8 +55,8 @@
 				</Measurement>
 			</Results>
 		</Test>
-		<EndDateTime>Nov 20 21:06 UTC</EndDateTime>
-		<EndTestTime>1763672802</EndTestTime>
+		<EndDateTime>Nov 20 21:11 UTC</EndDateTime>
+		<EndTestTime>1763673106</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
